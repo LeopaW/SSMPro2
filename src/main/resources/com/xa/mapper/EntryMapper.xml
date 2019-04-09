@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xa.mapper.EntryMapper">
+    <insert id="add">
+        insert into edoc_entry
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="title != null and title !='' ">
+                ,title
+            </if>
+            <if test="categoryId != null and categoryId !='' ">
+                ,categoryId
+            </if>
+            <if test="summary != null and summary !='' ">
+                ,summary
+            </if>
+            <if test="uploadUser != null and uploadUser !='' ">
+                ,uploadUser
+            </if>
+            <if test="createDate != null">
+                ,createDate
+            </if>
+        </trim>
+
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="title != null and title !='' ">
+                ,#{title}
+            </if>
+            <if test="categoryId != null and categoryId !='' ">
+                ,#{categoryId}
+            </if>
+            <if test="summary != null and summary !='' ">
+                ,#{summary}
+            </if>
+            <if test="uploadUser != null and uploadUser !='' ">
+                ,#{uploadUser}
+            </if>
+            <if test="createDate != null ">
+                ,#{createDate}
+            </if>
+        </trim>
+    </insert>
+    <update id="update">
+        update edoc_entry
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="summary != null and summary != ''">
+                summary = #{summary},
+            </if>
+            <if test="uploadUser != null and uploadUser != ''">
+                uploadUser = #{uploadUser},
+            </if>
+            <if test="createDate != null">
+                createDate = #{createDate},
+            </if>
+        </set>
+
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+        <!--<trim prefix="set">-->
+
+        <!--</trim>-->
+    </update>
+    <delete id="delete">
+        delete from edoc_entry
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </delete>
+    <select id="queryAll" resultType="com.xa.pojo.Entry">
+        select * from edoc_entry order by id desc;
+    </select>
+    <select id="queryByCategoryId" resultType="com.xa.pojo.Entry">
+        select * from edoc_entry
+        <where>
+            <if test="id != null and id != 0">
+               and categoryId = #{id}
+            </if>
+        </where>
+        order by id desc;
+    </select>
+    <select id="queryById" resultType="com.xa.pojo.Entry">
+        select * from edoc_entry
+        <where>
+            <if test="id != null">
+               and id = #{id}
+            </if>
+        </where>
+        ;
+    </select>
+</mapper>
